@@ -25,7 +25,12 @@ const ServicesProvider = ({ children }) => {
       console.log('I AM Now:',Date.now())
       const questions=JSON.parse(secureLocalStorage.getItem('Questions')) || ''
       const ansSheet=JSON.parse(secureLocalStorage.getItem('ANSSHEET')) || '';
-      if(questions != '' && ansSheet !='' ){
+      const userInfo = JSON.parse(secureLocalStorage.getItem('User')) || ''
+      // console.log("Q",questions);
+      // console.log("A",ansSheet);
+      // console.log("U",userInfo);
+      if(questions != '' && ansSheet !='' && userInfo != '' ){
+        // console.log("Best");
         let Result=0;
         questions.map((ques,index)=>{
             let ansObj=ansSheet.filter((item,i)=>item.page === index);
@@ -39,8 +44,9 @@ const ServicesProvider = ({ children }) => {
             result:Result,
             ansSheet:ansSheet,
             questions:questions,
-            user_id:user.id
+            user_id:userInfo.id
          }
+
          RESULTSAVINGAPI(value);
       }else{
         signOut();
