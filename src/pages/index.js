@@ -297,7 +297,7 @@ const LoginPage = () => {
               sx={{ marginBottom: 7 }}
               onClick={handleSubmit}
             >
-             {otpEnabled?"Submit":"Go to Exam"} 
+             {otpEnabled?"Submit":"Submit"} 
             </Button>
                     </form>
                   )}
