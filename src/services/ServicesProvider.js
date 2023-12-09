@@ -154,6 +154,37 @@ const ServicesProvider = ({ children }) => {
       })
   }
 
+  //ByPASS OTP LOGIN
+  const BYPASSOTPAPI= async (mailid, callback = (e) => {})=>{
+    await axios
+    .post(`${API}exam/bypasslog`, { email: mailid })
+    .then(res => {
+      Swal.fire({
+        position: 'center',
+        icon: 'info',
+        title: res.data.message
+      })
+      if(res.data.data != null){
+        const userData = res.data.data.user
+        const setting=res.data.data.setting;
+        const questions=res.data.data.questions;
+        setUser(userData)
+        setSetting(setting)
+      setQuestions(questions)
+      secureLocalStorage.setItem('User', JSON.stringify(userData))
+      secureLocalStorage.setItem('Setting', JSON.stringify(setting))
+      secureLocalStorage.setItem('Questions', JSON.stringify(questions))
+      secureLocalStorage.setItem('state', islogged)
+      updateExpireTime(setting.exam_time,setting.exam_end)
+      callback(res.data.data)
+      }
+      
+    })
+    .catch(err => {
+      console.log(err)
+    })
+  }
+
   //Get The Local Storage Data
   const getLocalStorageData=(callback=(log)=>{},callback2=(q)=>{})=>{
     const userInfo = JSON.parse(secureLocalStorage.getItem('User')) || ''
@@ -234,7 +265,8 @@ const ServicesProvider = ({ children }) => {
         setting,
         questions,
         USERLOGUPDATE,
-        RESULTSAVINGAPI
+        RESULTSAVINGAPI,
+        BYPASSOTPAPI
       }}
     >
       {children}

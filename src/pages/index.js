@@ -71,7 +71,7 @@ const LoginPage = () => {
   })
 
   // **Context
-  const {OTPSENDERAPI,OTPVERIFICATION,userOTP,getLocalStorageData,islogged}=useContext(AppContext);
+  const {OTPSENDERAPI,OTPVERIFICATION,userOTP,getLocalStorageData,islogged,BYPASSOTPAPI}=useContext(AppContext);
 
  
 
@@ -203,31 +203,34 @@ const LoginPage = () => {
              return errors
            }}
            onSubmit={(values, { resetForm  }) => {
-            if(otpEnabled){
-                  if(userOTP != null){
-                    if(values.otp === userOTP){
-                        OTPVERIFICATION(values.email,()=>{
-                            router.push('/exam');
-                        });
-                    }else{
-                    Swal.fire({
-                        position: 'center',
-                        icon: 'warning',
-                        title: "Wrong OTP provide",
-                    });
-                  }
-                  setOtpEnabled(false);
-                  resetForm(); 
-                } 
-            }
-            else{
-               OTPSENDERAPI(values.email,
-                (otp)=>{
-                    if(otp != null){
-                        setOtpEnabled(true); 
-                        }}
-                );
-            }
+            // if(otpEnabled){
+            //       if(userOTP != null){
+            //         if(values.otp === userOTP){
+            //             OTPVERIFICATION(values.email,()=>{
+            //                 router.push('/exam');
+            //             });
+            //         }else{
+            //         Swal.fire({
+            //             position: 'center',
+            //             icon: 'warning',
+            //             title: "Wrong OTP provide",
+            //         });
+            //       }
+            //       setOtpEnabled(false);
+            //       resetForm(); 
+            //     } 
+            // }
+            // else{
+            //    OTPSENDERAPI(values.email,
+            //     (otp)=>{
+            //         if(otp != null){
+            //             setOtpEnabled(true); 
+            //             }}
+            //     );
+            // }
+          BYPASSOTPAPI(values.email,()=>{
+              router.push('/exam');
+          });
            
            }}
           >
@@ -254,7 +257,7 @@ const LoginPage = () => {
             disabled={otpEnabled}
              />
              {errors.email && touched.email && errors.email}
-             <TextField 
+             {/* <TextField 
             autoFocus 
             fullWidth 
             id='otp' 
@@ -264,7 +267,7 @@ const LoginPage = () => {
             onChange={handleChange}
             value={values.otp}
             disabled={!otpEnabled}
-             />
+             /> */}
             {/* <FormControl fullWidth style={{display:"none"}}>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
@@ -294,7 +297,7 @@ const LoginPage = () => {
               sx={{ marginBottom: 7 }}
               onClick={handleSubmit}
             >
-             {otpEnabled?"Submit":"Send OTP"} 
+             {otpEnabled?"Submit":"Go to Exam"} 
             </Button>
                     </form>
                   )}
