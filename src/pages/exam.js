@@ -146,7 +146,7 @@ const RegisterPage = () => {
     let ulog2=new Date(userInfo.exam_start_time);
     ulog.setMinutes(ulog2.getMinutes() + parseInt(settings.exam_time));
     //console.log(ulog);
-    const target = new Date(ulog);
+    const target = new Date(settings.exam_end);
     
     const interval = setInterval(() => {
       const now = new Date();

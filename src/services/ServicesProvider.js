@@ -57,10 +57,18 @@ const ServicesProvider = ({ children }) => {
   }
 
   //Control the User active limit
-  const updateExpireTime = (time) => {
+  const updateExpireTime = (time,dateTime = null) => {
     const expireTime = Date.now() + (parseFloat(time)*60000)
-    secureLocalStorage.setItem('expireTime', expireTime)
-    console.log("updated:",expireTime);
+    if(dateTime != null){
+      let ex= new Date(dateTime);
+      ex=ex.getTime();
+      secureLocalStorage.setItem('expireTime', ex)
+      console.log("updated:",ex);
+    }else{
+      secureLocalStorage.setItem('expireTime', expireTime)
+      console.log("updated:",expireTime);
+    }
+    
   }
 
   //const SignOut or Exam End
@@ -138,7 +146,7 @@ const ServicesProvider = ({ children }) => {
         secureLocalStorage.setItem('Setting', JSON.stringify(setting))
         secureLocalStorage.setItem('Questions', JSON.stringify(questions))
         secureLocalStorage.setItem('state', islogged)
-        updateExpireTime(setting.exam_time)
+        updateExpireTime(setting.exam_time,setting.exam_end)
         callback(res.data.data)
       })
       .catch(err => {
